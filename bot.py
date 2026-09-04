@@ -207,13 +207,13 @@ ACTION_MESSAGES = {
         "{author} sweeps {target} off their feet and elopes! 💕",
     ],
     "kick": [
-        "{author} kicks {target} across the room! 🦶‍♂️💨",
+        "{author} kicks {target} across the room! 🦶💨",
         "{author} delivers a powerful kick to {target}! 🥋",
         "{author} roundhouse kicks {target}! 💥",
         "{author} dropkicks {target} into next week! 🦵",
     ],
     "punch": [
-        "{author} punches {target} square in the face! 💪",
+        "{author} punches {target} square in the face! 👊",
         "{author} throws a haymaker at {target}! 💪",
         "{author} lands a solid punch on {target}! 💥",
         "{author} gives {target} a one-two combo! 🥊",
@@ -250,7 +250,7 @@ ACTION_MESSAGES = {
     ],
     "bonk": [
         "{author} bonks {target} on the head! 🔨",
-        "{author} gives {target} a mighty bonk! 🛍️",
+        "{author} gives {target} a mighty bonk! 🛎️",
         "{author} bonks {target} — straight to horny jail! 🚨",
         "{author} bonks {target} into next week! 💫",
     ],
@@ -270,7 +270,7 @@ ACTION_MESSAGES = {
         "{author} bites {target}! 🦷",
         "{author} chomps down on {target}! 🐊",
         "{author} gives {target} a little nibble! 😬",
-        "{author} CHOMP — {target} got bit! 💈",
+        "{author} CHOMP — {target} got bit! 🦈",
     ],
     "boop": [
         "{author} boops {target}'s nose! 👆",
@@ -281,7 +281,7 @@ ACTION_MESSAGES = {
     "pinch": [
         "{author} pinches {target}'s cheek! 🤏",
         "{author} gives {target} a little pinch! 😈",
-        "{author} pinches {target} — ouch! 🨫",
+        "{author} pinches {target} — ouch! 🫣",
         "{author} pinches {target}'s nose! 👃",
     ],
     "flick": [
@@ -337,7 +337,7 @@ def action_embed(author: discord.Member, target: discord.Member, action: str, co
     return embed
 
 
-# ── Generic action command factory ─────────────────────
+# ── Generic action command factory ────────────────────
 
 def make_action_command(name: str):
     @bot.command(name=name)
@@ -355,7 +355,7 @@ for action in ACTION_GIFS:
     make_action_command(action)
 
 
-# ── Special marry command ────────────────────────────
+# ── Special marry command ─────────────────────────────
 
 @bot.command(name="marry")
 async def cmd_marry(ctx, member: discord.Member = None):
@@ -401,7 +401,7 @@ async def cmd_marry(ctx, member: discord.Member = None):
     await ctx.send(embed=embed)
 
 
-# ── Stats command ──────────────────────────────
+# ── Stats command ─────────────────────────────────────
 
 @bot.command(name="stats")
 async def cmd_stats(ctx, member: discord.Member = None):
@@ -483,7 +483,7 @@ async def cmd_stats(ctx, member: discord.Member = None):
         await ctx.send(embed=embed)
 
 
-# ── Divorce command ───────────────────────────────
+# ── Divorce command ───────────────────────────────────
 
 @bot.command(name="divorce")
 async def cmd_divorce(ctx, member: discord.Member = None):
@@ -504,7 +504,7 @@ async def cmd_divorce(ctx, member: discord.Member = None):
     await ctx.send(embed=embed)
 
 
-# ── On ready ──────────────────────────────────
+# ── On ready ──────────────────────────────────────────
 
 @bot.event
 async def on_ready():
@@ -517,7 +517,7 @@ async def on_ready():
     ))
 
 
-# ── Run ───────────────────────────────────
+# ── Run ───────────────────────────────────────────────
 
 if __name__ == "__main__":
     import os
