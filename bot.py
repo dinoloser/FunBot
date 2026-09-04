@@ -58,13 +58,6 @@ ACTION_GIFS = {
         "https://tenor.com/view/anime-kiss-mwah-love-gif-17984512",
         "https://tenor.com/view/anime-kiss-smooch-gif-17367580",
     ],
-    "marry": [
-        "https://tenor.com/view/wedding-anime-couple-marriage-proposal-gif-17966152",
-        "https://tenor.com/view/anime-wedding-marriage-love-couple-gif-13968470",
-        "https://tenor.com/view/anime-marry-me-propose-engagement-gif-16815477",
-        "https://tenor.com/view/anime-marriage-bride-groom-gif-17984513",
-        "https://tenor.com/view/anime-wedding-ceremony-gif-17367581",
-    ],
     "kick": [
         "https://tenor.com/view/anime-kick-fight-gif-17984490",
         "https://tenor.com/view/anime-kick-gif-17367568",
@@ -193,6 +186,22 @@ ACTION_GIFS = {
     ],
 }
 
+# Marry GIFs and messages (separate from factory loop)
+MARRY_GIFS = [
+    "https://tenor.com/view/wedding-anime-couple-marriage-proposal-gif-17966152",
+    "https://tenor.com/view/anime-wedding-marriage-love-couple-gif-13968470",
+    "https://tenor.com/view/anime-marry-me-propose-engagement-gif-16815477",
+    "https://tenor.com/view/anime-marriage-bride-groom-gif-17984513",
+    "https://tenor.com/view/anime-wedding-ceremony-gif-17367581",
+]
+
+MARRY_MESSAGES = [
+    "{author} proposes to {target}! Will they say yes? 💍",
+    "{author} marries {target} in a beautiful ceremony! 💒",
+    "{author} and {target} are now married! Congrats! 🎉",
+    "{author} sweeps {target} off their feet and elopes! 💕",
+]
+
 ACTION_MESSAGES = {
     "kiss": [
         "{author} gives {target} a sweet kiss! 💋",
@@ -200,20 +209,14 @@ ACTION_MESSAGES = {
         "{author} kisses {target} passionately! 🔥",
         "{author} sneakily steals a kiss from {target}! 🥰",
     ],
-    "marry": [
-        "{author} proposes to {target}! Will they say yes? 💍",
-        "{author} marries {target} in a beautiful ceremony! 💒",
-        "{author} and {target} are now married! Congrats! 🎉",
-        "{author} sweeps {target} off their feet and elopes! 💕",
-    ],
     "kick": [
-        "{author} kicks {target} across the room! 🦶💨",
+        "{author} kicks {target} across the room! 🦶‍♂️💨",
         "{author} delivers a powerful kick to {target}! 🥋",
         "{author} roundhouse kicks {target}! 💥",
         "{author} dropkicks {target} into next week! 🦵",
     ],
     "punch": [
-        "{author} punches {target} square in the face! 👊",
+        "{author} punches {target} square in the face! 💪",
         "{author} throws a haymaker at {target}! 💪",
         "{author} lands a solid punch on {target}! 💥",
         "{author} gives {target} a one-two combo! 🥊",
@@ -250,7 +253,7 @@ ACTION_MESSAGES = {
     ],
     "bonk": [
         "{author} bonks {target} on the head! 🔨",
-        "{author} gives {target} a mighty bonk! 🛎️",
+        "{author} gives {target} a mighty bonk! 🛍️",
         "{author} bonks {target} — straight to horny jail! 🚨",
         "{author} bonks {target} into next week! 💫",
     ],
@@ -270,7 +273,7 @@ ACTION_MESSAGES = {
         "{author} bites {target}! 🦷",
         "{author} chomps down on {target}! 🐊",
         "{author} gives {target} a little nibble! 😬",
-        "{author} CHOMP — {target} got bit! 🦈",
+        "{author} CHOMP — {target} got bit! 💈",
     ],
     "boop": [
         "{author} boops {target}'s nose! 👆",
@@ -281,7 +284,7 @@ ACTION_MESSAGES = {
     "pinch": [
         "{author} pinches {target}'s cheek! 🤏",
         "{author} gives {target} a little pinch! 😈",
-        "{author} pinches {target} — ouch! 🫣",
+        "{author} pinches {target} — ouch! 🪫",
         "{author} pinches {target}'s nose! 👃",
     ],
     "flick": [
@@ -317,7 +320,7 @@ ACTION_MESSAGES = {
 }
 
 COLOR_MAP = {
-    "kiss": "#FF69B4", "marry": "#FF69B4", "cuddle": "#FF69B4", "hug": "#FF69B4", "flirt": "#FF69B4",
+    "kiss": "#FF69B4", "cuddle": "#FF69B4", "hug": "#FF69B4", "flirt": "#FF69B4",
     "pat": "#FFD700", "boop": "#FFD700",
     "bonk": "#FFA500",
     "kill": "#000000",
@@ -355,7 +358,7 @@ for action in ACTION_GIFS:
     make_action_command(action)
 
 
-# ── Special marry command ─────────────────────────────
+# ── Special marry command ────────────────────────
 
 @bot.command(name="marry")
 async def cmd_marry(ctx, member: discord.Member = None):
@@ -380,9 +383,9 @@ async def cmd_marry(ctx, member: discord.Member = None):
         save_json(MARRIAGE_FILE, marriages)
 
     # Build the embed
-    msg_template = random.choice(ACTION_MESSAGES["marry"])
+    msg_template = random.choice(MARRY_MESSAGES)
     message = msg_template.format(author=ctx.author.mention, target=member.mention)
-    gif_url = random.choice(ACTION_GIFS["marry"])
+    gif_url = random.choice(MARRY_GIFS)
     color = discord.Color.from_str("#FF69B4")
     embed = discord.Embed(description=message, color=color)
     embed.set_image(url=gif_url)
@@ -401,7 +404,7 @@ async def cmd_marry(ctx, member: discord.Member = None):
     await ctx.send(embed=embed)
 
 
-# ── Stats command ─────────────────────────────────────
+# ── Stats command ──────────────────────────
 
 @bot.command(name="stats")
 async def cmd_stats(ctx, member: discord.Member = None):
@@ -483,7 +486,7 @@ async def cmd_stats(ctx, member: discord.Member = None):
         await ctx.send(embed=embed)
 
 
-# ── Divorce command ───────────────────────────────────
+# ── Divorce command ─────────────────────────
 
 @bot.command(name="divorce")
 async def cmd_divorce(ctx, member: discord.Member = None):
@@ -504,7 +507,7 @@ async def cmd_divorce(ctx, member: discord.Member = None):
     await ctx.send(embed=embed)
 
 
-# ── On ready ──────────────────────────────────────────
+# ── On ready ─────────────────────────────
 
 @bot.event
 async def on_ready():
@@ -517,7 +520,7 @@ async def on_ready():
     ))
 
 
-# ── Run ───────────────────────────────────────────────
+# ── Run ─────────────────────────────
 
 if __name__ == "__main__":
     import os
