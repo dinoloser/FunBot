@@ -49,174 +49,174 @@ def get_count(author_id: int, target_id: int, command: str) -> int:
         return stats[author_key][target_key][command]
     return 0
 
-# ── Action GIFs & Messages ────────────────────────────
+# ── Action GIFs & Messages (direct .gif URLs for Discord) ─────
 
 ACTION_GIFS = {
     "kiss": [
-        "https://tenor.com/view/kiss-anime-kiss-anime-gif-18292283",
-        "https://tenor.com/view/anime-kiss-love-romantic-couple-gif-13968388",
-        "https://tenor.com/view/anime-kiss-lip-kiss-gif-14566668",
-        "https://tenor.com/view/anime-kiss-mwah-love-gif-17984512",
-        "https://tenor.com/view/anime-kiss-smooch-gif-17367580",
+        "https://tenor.com/18292283.gif",
+        "https://tenor.com/13968388.gif",
+        "https://tenor.com/14566668.gif",
+        "https://tenor.com/17984512.gif",
+        "https://tenor.com/17367580.gif",
     ],
     "kick": [
-        "https://tenor.com/view/anime-kick-fight-gif-17984490",
-        "https://tenor.com/view/anime-kick-gif-17367568",
-        "https://tenor.com/view/anime-kick-ass-kick-gif-14566285",
-        "https://tenor.com/view/anime-flying-kick-gif-17984514",
-        "https://tenor.com/view/anime-drop-kick-gif-17367582",
+        "https://tenor.com/17984490.gif",
+        "https://tenor.com/17367568.gif",
+        "https://tenor.com/14566285.gif",
+        "https://tenor.com/17984514.gif",
+        "https://tenor.com/17367582.gif",
     ],
     "punch": [
-        "https://tenor.com/view/anime-punch-fight-gif-17984493",
-        "https://tenor.com/view/punch-anime-punch-gif-14000175",
-        "https://tenor.com/view/anime-punch-gif-17367569",
-        "https://tenor.com/view/anime-strong-punch-gif-17984515",
-        "https://tenor.com/view/anime-uppercut-gif-17367583",
+        "https://tenor.com/17984493.gif",
+        "https://tenor.com/14000175.gif",
+        "https://tenor.com/17367569.gif",
+        "https://tenor.com/17984515.gif",
+        "https://tenor.com/17367583.gif",
     ],
     "slap": [
-        "https://tenor.com/view/anime-slap-gif-17984500",
-        "https://tenor.com/view/anime-slap-gif-17367563",
-        "https://tenor.com/view/slap-anime-slap-gif-14000176",
-        "https://tenor.com/view/anime-hard-slap-gif-17984516",
-        "https://tenor.com/view/anime-slap-fight-gif-17367584",
+        "https://tenor.com/17984500.gif",
+        "https://tenor.com/17367563.gif",
+        "https://tenor.com/14000176.gif",
+        "https://tenor.com/17984516.gif",
+        "https://tenor.com/17367584.gif",
     ],
     "cuddle": [
-        "https://tenor.com/view/anime-cuddle-hug-love-gif-17984496",
-        "https://tenor.com/view/anime-cuddle-love-sweet-gif-13968472",
-        "https://tenor.com/view/cuddle-anime-cuddle-gif-14000177",
-        "https://tenor.com/view/anime-cuddle-snuggle-gif-17984517",
-        "https://tenor.com/view/anime-cuddle-bed-gif-17367585",
+        "https://tenor.com/17984496.gif",
+        "https://tenor.com/13968472.gif",
+        "https://tenor.com/14000177.gif",
+        "https://tenor.com/17984517.gif",
+        "https://tenor.com/17367585.gif",
     ],
     "lick": [
-        "https://tenor.com/view/anime-lick-tongue-gif-17984503",
-        "https://tenor.com/view/anime-lick-gif-17367566",
-        "https://tenor.com/view/lick-anime-lick-gif-14000179",
-        "https://tenor.com/view/anime-lick-face-gif-17984518",
-        "https://tenor.com/view/anime-big-lick-gif-17367586",
+        "https://tenor.com/17984503.gif",
+        "https://tenor.com/17367566.gif",
+        "https://tenor.com/14000179.gif",
+        "https://tenor.com/17984518.gif",
+        "https://tenor.com/17367586.gif",
     ],
     "hug": [
-        "https://tenor.com/view/anime-hug-hug-anime-cuddle-gif-17984495",
-        "https://tenor.com/view/anime-hug-gif-17367567",
-        "https://tenor.com/view/hug-anime-hug-gif-14000178",
-        "https://tenor.com/view/anime-big-hug-gif-17984519",
-        "https://tenor.com/view/anime-group-hug-gif-17367587",
+        "https://tenor.com/17984495.gif",
+        "https://tenor.com/17367567.gif",
+        "https://tenor.com/14000178.gif",
+        "https://tenor.com/17984519.gif",
+        "https://tenor.com/17367587.gif",
     ],
     "pat": [
-        "https://tenor.com/view/anime-pat-head-pat-gif-17984499",
-        "https://tenor.com/view/anime-pat-gif-17367564",
-        "https://tenor.com/view/pat-anime-pat-gif-14000180",
-        "https://tenor.com/view/anime-head-pat-gif-17984520",
-        "https://tenor.com/view/anime-gentle-pat-gif-17367588",
+        "https://tenor.com/17984499.gif",
+        "https://tenor.com/17367564.gif",
+        "https://tenor.com/14000180.gif",
+        "https://tenor.com/17984520.gif",
+        "https://tenor.com/17367588.gif",
     ],
     "bonk": [
-        "https://tenor.com/view/anime-bonk-hit-head-gif-17984491",
-        "https://tenor.com/view/anime-bonk-gif-17367570",
-        "https://tenor.com/view/bonk-anime-bonk-gif-14000181",
-        "https://tenor.com/view/anime-bonk-hammer-gif-17984521",
-        "https://tenor.com/view/anime-bonk-stick-gif-17367589",
+        "https://tenor.com/17984491.gif",
+        "https://tenor.com/17367570.gif",
+        "https://tenor.com/14000181.gif",
+        "https://tenor.com/17984521.gif",
+        "https://tenor.com/17367589.gif",
     ],
     "flirt": [
-        "https://tenor.com/view/anime-flirt-wink-gif-17984501",
-        "https://tenor.com/view/anime-flirt-gif-17367565",
-        "https://tenor.com/view/anime-flirty-eyes-gif-14000182",
-        "https://tenor.com/view/anime-flirt-smile-gif-17984522",
-        "https://tenor.com/view/anime-flirt-blush-gif-17367590",
+        "https://tenor.com/17984501.gif",
+        "https://tenor.com/17367565.gif",
+        "https://tenor.com/14000182.gif",
+        "https://tenor.com/17984522.gif",
+        "https://tenor.com/17367590.gif",
     ],
     "kill": [
-        "https://tenor.com/view/anime-kill-murder-death-gif-17984492",
-        "https://tenor.com/view/anime-kill-gif-17367571",
-        "https://tenor.com/view/kill-anime-kill-gif-14000183",
-        "https://tenor.com/view/anime-kill-sword-gif-17984523",
-        "https://tenor.com/view/anime-death-stab-gif-17367591",
+        "https://tenor.com/17984492.gif",
+        "https://tenor.com/17367571.gif",
+        "https://tenor.com/14000183.gif",
+        "https://tenor.com/17984523.gif",
+        "https://tenor.com/17367591.gif",
     ],
     "bite": [
-        "https://tenor.com/view/anime-bite-gif-17367572",
-        "https://tenor.com/view/anime-bite-chomp-gif-17984504",
-        "https://tenor.com/view/bite-anime-bite-gif-14000184",
-        "https://tenor.com/view/anime-bite-nom-gif-17984524",
-        "https://tenor.com/view/anime-bite-shark-gif-17367592",
+        "https://tenor.com/17367572.gif",
+        "https://tenor.com/17984504.gif",
+        "https://tenor.com/14000184.gif",
+        "https://tenor.com/17984524.gif",
+        "https://tenor.com/17367592.gif",
     ],
     "boop": [
-        "https://tenor.com/view/anime-boop-gif-17367573",
-        "https://tenor.com/view/anime-boop-nose-gif-17984505",
-        "https://tenor.com/view/boop-anime-boop-gif-14000185",
-        "https://tenor.com/view/anime-boop-sweet-gif-17984525",
-        "https://tenor.com/view/anime-boop-finger-gif-17367593",
+        "https://tenor.com/17367573.gif",
+        "https://tenor.com/17984505.gif",
+        "https://tenor.com/14000185.gif",
+        "https://tenor.com/17984525.gif",
+        "https://tenor.com/17367593.gif",
     ],
     "pinch": [
-        "https://tenor.com/view/anime-pinch-gif-17367574",
-        "https://tenor.com/view/anime-pinch-cheek-gif-17984506",
-        "https://tenor.com/view/pinch-anime-pinch-gif-14000186",
-        "https://tenor.com/view/anime-pinch-squeeze-gif-17984526",
-        "https://tenor.com/view/anime-pinch-face-gif-17367594",
+        "https://tenor.com/17367574.gif",
+        "https://tenor.com/17984506.gif",
+        "https://tenor.com/14000186.gif",
+        "https://tenor.com/17984526.gif",
+        "https://tenor.com/17367594.gif",
     ],
     "flick": [
-        "https://tenor.com/view/anime-flick-gif-17367575",
-        "https://tenor.com/view/anime-flick-forehead-gif-17984507",
-        "https://tenor.com/view/flick-anime-flick-gif-14000187",
-        "https://tenor.com/view/anime-flick-nose-gif-17984527",
-        "https://tenor.com/view/anime-flick-head-gif-17367595",
+        "https://tenor.com/17367575.gif",
+        "https://tenor.com/17984507.gif",
+        "https://tenor.com/14000187.gif",
+        "https://tenor.com/17984527.gif",
+        "https://tenor.com/17367595.gif",
     ],
     "tackle": [
-        "https://tenor.com/view/anime-tackle-gif-17367576",
-        "https://tenor.com/view/anime-tackle-hug-gif-17984508",
-        "https://tenor.com/view/tackle-anime-tackle-gif-14000188",
-        "https://tenor.com/view/anime-tackle-flying-gif-17984528",
-        "https://tenor.com/view/anime-tackle-body-slam-gif-17367596",
+        "https://tenor.com/17367576.gif",
+        "https://tenor.com/17984508.gif",
+        "https://tenor.com/14000188.gif",
+        "https://tenor.com/17984528.gif",
+        "https://tenor.com/17367596.gif",
     ],
     "throw": [
-        "https://tenor.com/view/anime-throw-gif-17367577",
-        "https://tenor.com/view/anime-throw-away-gif-17984509",
-        "https://tenor.com/view/throw-anime-throw-gif-14000189",
-        "https://tenor.com/view/anime-throw-far-gif-17984529",
-        "https://tenor.com/view/anime-toss-gif-17367597",
+        "https://tenor.com/17367577.gif",
+        "https://tenor.com/17984509.gif",
+        "https://tenor.com/14000189.gif",
+        "https://tenor.com/17984529.gif",
+        "https://tenor.com/17367597.gif",
     ],
     "spit": [
-        "https://tenor.com/view/anime-spit-gif-17367578",
-        "https://tenor.com/view/anime-spit-out-gif-17984510",
-        "https://tenor.com/view/spit-anime-spit-gif-14000190",
-        "https://tenor.com/view/anime-spit-water-gif-17984530",
-        "https://tenor.com/view/anime-spit-dramatic-gif-17367598",
+        "https://tenor.com/17367578.gif",
+        "https://tenor.com/17984510.gif",
+        "https://tenor.com/14000190.gif",
+        "https://tenor.com/17984530.gif",
+        "https://tenor.com/17367598.gif",
     ],
     "yeet": [
-        "https://tenor.com/view/anime-yeet-gif-17367579",
-        "https://tenor.com/view/anime-yeet-away-gif-17984511",
-        "https://tenor.com/view/yeet-anime-yeet-gif-14000191",
-        "https://tenor.com/view/anime-yeet-fly-gif-17984531",
-        "https://tenor.com/view/anime-yeet-launch-gif-17367599",
+        "https://tenor.com/17367579.gif",
+        "https://tenor.com/17984511.gif",
+        "https://tenor.com/14000191.gif",
+        "https://tenor.com/17984531.gif",
+        "https://tenor.com/17367599.gif",
     ],
 }
 
 MARRY_GIFS = [
-    "https://tenor.com/view/wedding-anime-couple-marriage-proposal-gif-17966152",
-    "https://tenor.com/view/anime-wedding-marriage-love-couple-gif-13968470",
-    "https://tenor.com/view/anime-marry-me-propose-engagement-gif-16815477",
-    "https://tenor.com/view/anime-marriage-bride-groom-gif-17984513",
-    "https://tenor.com/view/anime-wedding-ceremony-gif-17367581",
+    "https://tenor.com/17966152.gif",
+    "https://tenor.com/13968470.gif",
+    "https://tenor.com/16815477.gif",
+    "https://tenor.com/17984513.gif",
+    "https://tenor.com/17367581.gif",
 ]
 
 PROPOSAL_GIFS = [
-    "https://tenor.com/view/anime-propose-proposal-romantic-gif-17984533",
-    "https://tenor.com/view/anime-proposal-down-on-one-knee-gif-17367600",
-    "https://tenor.com/view/anime-propose-ring-gif-17984534",
-    "https://tenor.com/view/anime-proposal-romantic-gif-17367601",
-    "https://tenor.com/view/anime-propose-kneel-gif-17984535",
+    "https://tenor.com/17984533.gif",
+    "https://tenor.com/17367600.gif",
+    "https://tenor.com/17984534.gif",
+    "https://tenor.com/17367601.gif",
+    "https://tenor.com/17984535.gif",
 ]
 
 ACCEPT_GIFS = [
-    "https://tenor.com/view/anime-hug-yes-accept-gif-17984536",
-    "https://tenor.com/view/anime-happy-jump-gif-17367602",
-    "https://tenor.com/view/anime-celebration-yes-gif-17984537",
-    "https://tenor.com/view/anime-cry-happy-tears-gif-17367603",
-    "https://tenor.com/view/anime-squee-happy-gif-17984538",
+    "https://tenor.com/17984536.gif",
+    "https://tenor.com/17367602.gif",
+    "https://tenor.com/17984537.gif",
+    "https://tenor.com/17367603.gif",
+    "https://tenor.com/17984538.gif",
 ]
 
 DECLINE_GIFS = [
-    "https://tenor.com/view/anime-no-shake-head-gif-17984539",
-    "https://tenor.com/view/anime-sad-cry-gif-17984532",
-    "https://tenor.com/view/anime-reject-no-gif-17367604",
-    "https://tenor.com/view/anime-sad-rejection-gif-17984540",
-    "https://tenor.com/view/anime-cry-sad-tears-gif-17367605",
+    "https://tenor.com/17984539.gif",
+    "https://tenor.com/17984532.gif",
+    "https://tenor.com/17367604.gif",
+    "https://tenor.com/17984540.gif",
+    "https://tenor.com/17367605.gif",
 ]
 
 ACTION_MESSAGES = {
@@ -420,15 +420,9 @@ class MarryView(View):
         await interaction.response.edit_message(embed=embed, view=self)
 
     async def on_timeout(self):
-        if not self.answered:
-            gif_url = random.choice(DECLINE_GIFS)
-            embed = discord.Embed(
-                description=f"⏰ {self.proposer.mention}'s proposal to {self.target.mention} timed out... they never answered... 😔",
-                color=discord.Color.dark_gray()
-            )
-            embed.set_image(url=gif_url)
-            # Can't edit without interaction, so we'll just let it expire silently
-            # The buttons will be disabled on timeout
+        self.answered = True
+        for child in self.children:
+            child.disabled = True
 
 
 def make_action_command(name: str):
@@ -584,7 +578,7 @@ async def cmd_divorce(ctx, member: discord.Member = None):
         description=f"💔 {ctx.author.mention} divorced {member.mention}... it's over.",
         color=discord.Color.dark_gray()
     )
-    embed.set_image(url="https://tenor.com/view/anime-sad-cry-gif-17984532")
+    embed.set_image(url="https://tenor.com/17984532.gif")
     await ctx.send(embed=embed)
 
 
