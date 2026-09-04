@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ui import Button, View
 import random
 import json
 import os
@@ -186,7 +187,6 @@ ACTION_GIFS = {
     ],
 }
 
-# Marry GIFs and messages (separate from factory loop)
 MARRY_GIFS = [
     "https://tenor.com/view/wedding-anime-couple-marriage-proposal-gif-17966152",
     "https://tenor.com/view/anime-wedding-marriage-love-couple-gif-13968470",
@@ -195,11 +195,28 @@ MARRY_GIFS = [
     "https://tenor.com/view/anime-wedding-ceremony-gif-17367581",
 ]
 
-MARRY_MESSAGES = [
-    "{author} proposes to {target}! Will they say yes? 💍",
-    "{author} marries {target} in a beautiful ceremony! 💒",
-    "{author} and {target} are now married! Congrats! 🎉",
-    "{author} sweeps {target} off their feet and elopes! 💕",
+PROPOSAL_GIFS = [
+    "https://tenor.com/view/anime-propose-proposal-romantic-gif-17984533",
+    "https://tenor.com/view/anime-proposal-down-on-one-knee-gif-17367600",
+    "https://tenor.com/view/anime-propose-ring-gif-17984534",
+    "https://tenor.com/view/anime-proposal-romantic-gif-17367601",
+    "https://tenor.com/view/anime-propose-kneel-gif-17984535",
+]
+
+ACCEPT_GIFS = [
+    "https://tenor.com/view/anime-hug-yes-accept-gif-17984536",
+    "https://tenor.com/view/anime-happy-jump-gif-17367602",
+    "https://tenor.com/view/anime-celebration-yes-gif-17984537",
+    "https://tenor.com/view/anime-cry-happy-tears-gif-17367603",
+    "https://tenor.com/view/anime-squee-happy-gif-17984538",
+]
+
+DECLINE_GIFS = [
+    "https://tenor.com/view/anime-no-shake-head-gif-17984539",
+    "https://tenor.com/view/anime-sad-cry-gif-17984532",
+    "https://tenor.com/view/anime-reject-no-gif-17367604",
+    "https://tenor.com/view/anime-sad-rejection-gif-17984540",
+    "https://tenor.com/view/anime-cry-sad-tears-gif-17367605",
 ]
 
 ACTION_MESSAGES = {
@@ -253,7 +270,7 @@ ACTION_MESSAGES = {
     ],
     "bonk": [
         "{author} bonks {target} on the head! 🔨",
-        "{author} gives {target} a mighty bonk! 🛍️",
+        "{author} gives {target} a mighty bonk! 🛎️",
         "{author} bonks {target} — straight to horny jail! 🚨",
         "{author} bonks {target} into next week! 💫",
     ],
@@ -273,7 +290,7 @@ ACTION_MESSAGES = {
         "{author} bites {target}! 🦷",
         "{author} chomps down on {target}! 🐊",
         "{author} gives {target} a little nibble! 😬",
-        "{author} CHOMP — {target} got bit! 💈",
+        "{author} CHOMP — {target} got bit! 🦈",
     ],
     "boop": [
         "{author} boops {target}'s nose! 👆",
@@ -284,7 +301,7 @@ ACTION_MESSAGES = {
     "pinch": [
         "{author} pinches {target}'s cheek! 🤏",
         "{author} gives {target} a little pinch! 😈",
-        "{author} pinches {target} — ouch! 🪫",
+        "{author} pinches {target} — ouch! 🫣",
         "{author} pinches {target}'s nose! 👃",
     ],
     "flick": [
@@ -340,7 +357,79 @@ def action_embed(author: discord.Member, target: discord.Member, action: str, co
     return embed
 
 
-# ── Generic action command factory ────────────────────
+# ── Marry View (Accept/Decline buttons) ───────────────
+
+class MarryView(View):
+    def __init__(self, proposer: discord.Member, target: discord.Member):
+        super().__init__(timeout=60.0)
+        self.proposer = proposer
+        self.target = target
+        self.answered = False
+
+    async def disable_buttons(self, interaction: discord.Interaction):
+        for child in self.children:
+            child.disabled = True
+        await interaction.message.edit(view=self)
+
+    @discord.ui.button(label="💍 Accept", style=discord.ButtonStyle.success, emoji="✅")
+    async def accept_button(self, interaction: discord.Interaction, button: Button):
+        if interaction.user.id != self.target.id:
+            await interaction.response.send_message(f"Only {self.target.mention} can accept this proposal!", ephemeral=True)
+            return
+        self.answered = True
+
+        # Record marriage
+        author_key = str(self.proposer.id)
+        target_key = str(self.target.id)
+        marriage_key = f"{author_key}_{target_key}"
+        marriages[marriage_key] = {
+            "author_id": self.proposer.id,
+            "target_id": self.target.id,
+            "date": datetime.now(timezone.utc).isoformat()
+        }
+        save_json(MARRIAGE_FILE, marriages)
+
+        gif_url = random.choice(ACCEPT_GIFS)
+        embed = discord.Embed(
+            description=f"💍 **{self.proposer.mention} & {self.target.mention} are now married!** 🎉\nThey said yes! 💕",
+            color=discord.Color.from_str("#FF69B4")
+        )
+        embed.set_image(url=gif_url)
+        wedding_date = datetime.fromisoformat(marriages[marriage_key]["date"])
+        date_str = wedding_date.strftime("%B %d, %Y")
+        embed.set_footer(text=f"Married on {date_str}")
+
+        await self.disable_buttons(interaction)
+        await interaction.response.edit_message(embed=embed, view=self)
+
+    @discord.ui.button(label="💔 Decline", style=discord.ButtonStyle.danger, emoji="❌")
+    async def decline_button(self, interaction: discord.Interaction, button: Button):
+        if interaction.user.id != self.target.id:
+            await interaction.response.send_message(f"Only {self.target.mention} can decline this proposal!", ephemeral=True)
+            return
+        self.answered = True
+
+        gif_url = random.choice(DECLINE_GIFS)
+        embed = discord.Embed(
+            description=f"💔 {self.proposer.mention} proposed to {self.target.mention}... but they said no... 😢",
+            color=discord.Color.dark_gray()
+        )
+        embed.set_image(url=gif_url)
+
+        await self.disable_buttons(interaction)
+        await interaction.response.edit_message(embed=embed, view=self)
+
+    async def on_timeout(self):
+        if not self.answered:
+            gif_url = random.choice(DECLINE_GIFS)
+            embed = discord.Embed(
+                description=f"⏰ {self.proposer.mention}'s proposal to {self.target.mention} timed out... they never answered... 😔",
+                color=discord.Color.dark_gray()
+            )
+            embed.set_image(url=gif_url)
+            # Can't edit without interaction, so we'll just let it expire silently
+            # The buttons will be disabled on timeout
+
 
 def make_action_command(name: str):
     @bot.command(name=name)
@@ -358,7 +447,7 @@ for action in ACTION_GIFS:
     make_action_command(action)
 
 
-# ── Special marry command ────────────────────────
+# ── Special marry command ───────────────────────────────
 
 @bot.command(name="marry")
 async def cmd_marry(ctx, member: discord.Member = None):
@@ -366,45 +455,37 @@ async def cmd_marry(ctx, member: discord.Member = None):
         await ctx.send("You need to mention someone to marry!")
         return
 
+    # Check if already married to this person
+    marriage_key = f"{str(ctx.author.id)}_{str(member.id)}"
+    if marriage_key in marriages:
+        wedding_date = datetime.fromisoformat(marriages[marriage_key]["date"])
+        days_married = (datetime.now(timezone.utc) - wedding_date).days
+        date_str = wedding_date.strftime("%B %d, %Y")
+        embed = discord.Embed(
+            description=f"💍 You're already married to {member.mention}!\nSince {date_str} — **{days_married}** days together! 💕",
+            color=discord.Color.from_str("#FF69B4")
+        )
+        embed.set_image(url=random.choice(MARRY_GIFS))
+        await ctx.send(embed=embed)
+        return
+
+    # Send proposal
     record_use(ctx.author.id, member.id, "marry")
     count = get_count(ctx.author.id, member.id, "marry")
 
-    author_key = str(ctx.author.id)
-    target_key = str(member.id)
-    marriage_key = f"{author_key}_{target_key}"
-
-    # If not married yet, record the date
-    if marriage_key not in marriages:
-        marriages[marriage_key] = {
-            "author_id": ctx.author.id,
-            "target_id": member.id,
-            "date": datetime.now(timezone.utc).isoformat()
-        }
-        save_json(MARRIAGE_FILE, marriages)
-
-    # Build the embed
-    msg_template = random.choice(MARRY_MESSAGES)
-    message = msg_template.format(author=ctx.author.mention, target=member.mention)
-    gif_url = random.choice(MARRY_GIFS)
-    color = discord.Color.from_str("#FF69B4")
-    embed = discord.Embed(description=message, color=color)
-    embed.set_image(url=gif_url)
-
-    # Marriage date & days since
-    wedding_date = datetime.fromisoformat(marriages[marriage_key]["date"])
-    days_married = (datetime.now(timezone.utc) - wedding_date).days
-    date_str = wedding_date.strftime("%B %d, %Y")
-    embed.add_field(
-        name="💍 Married since",
-        value=f"{date_str} — **{days_married}** day{'s' if days_married != 1 else ''} together!",
-        inline=False
+    gif_url = random.choice(PROPOSAL_GIFS)
+    embed = discord.Embed(
+        description=f"💍 {ctx.author.mention} is down on one knee...\n**{member.mention}, will you marry them?** 💕",
+        color=discord.Color.from_str("#FF69B4")
     )
+    embed.set_image(url=gif_url)
+    embed.set_footer(text=f"#{count} — you've proposed to them {count} times")
 
-    embed.set_footer(text=f"#{count} — you've married them {count} times")
-    await ctx.send(embed=embed)
+    view = MarryView(ctx.author, member)
+    await ctx.send(embed=embed, view=view)
 
 
-# ── Stats command ──────────────────────────
+# ── Stats command ───────────────────────────────────────
 
 @bot.command(name="stats")
 async def cmd_stats(ctx, member: discord.Member = None):
@@ -486,7 +567,7 @@ async def cmd_stats(ctx, member: discord.Member = None):
         await ctx.send(embed=embed)
 
 
-# ── Divorce command ─────────────────────────
+# ── Divorce command ─────────────────────────────────────
 
 @bot.command(name="divorce")
 async def cmd_divorce(ctx, member: discord.Member = None):
@@ -507,7 +588,7 @@ async def cmd_divorce(ctx, member: discord.Member = None):
     await ctx.send(embed=embed)
 
 
-# ── On ready ─────────────────────────────
+# ── On ready ────────────────────────────────────────────
 
 @bot.event
 async def on_ready():
@@ -520,7 +601,7 @@ async def on_ready():
     ))
 
 
-# ── Run ─────────────────────────────
+# ── Run ─────────────────────────────────────────────────
 
 if __name__ == "__main__":
     import os
